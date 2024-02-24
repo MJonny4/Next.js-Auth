@@ -1,9 +1,9 @@
-import NextAuth from 'next-auth'
 import authConfig from '@/auth.config'
+import NextAuth from 'next-auth'
 
-import { PrismaAdapter } from '@auth/prisma-adapter'
-import { db } from '@/lib/db'
 import { getUserById } from '@/data/user'
+import { db } from '@/lib/db'
+import { PrismaAdapter } from '@auth/prisma-adapter'
 
 declare module 'next-auth' {
     interface User {
@@ -36,6 +36,16 @@ export const {
         //     if (!existingUser || !existingUser.emailVerified) return false
         //     return true
         // },
+        async signIn({ user, account }) {
+            if (account?.provider !== 'credentials') return true
+
+            const existingUser = await getUserById(user.id)
+            if (!existingUser || !existingUser.emailVerified) return false
+
+            // TODO: Add 2FA check here
+
+            return true
+        },
         async session({ token, session }) {
             if (token.sub && session.user) {
                 session.user.id = token.sub
