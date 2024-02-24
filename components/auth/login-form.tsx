@@ -21,8 +21,11 @@ import { Input } from '../ui/input'
 import { CardWrapper } from './card-wrapper'
 import { login } from '@/actions/login'
 import { useState, useTransition } from 'react'
+import { useSearchParams } from 'next/navigation'
 
 export function LoginForm() {
+    const searchParams = useSearchParams()
+    const urlError = searchParams.get('error') === "OAuthAccountNotLinkedError" ? "This account is already linked to another user. Please sign in with the original account." : undefined
     const [isPending, startTransition] = useTransition()
     const [error, setError] = useState<string | undefined>('')
     const [success, setSuccess] = useState<string | undefined>('')
@@ -41,8 +44,8 @@ export function LoginForm() {
 
         startTransition(() => {
             login(values).then((data) => {
-                setError(data.error)
-                setSuccess(data.success)
+                setError(data?.error)
+                // setSuccess(data?.success)
             })
         })
     }
@@ -101,7 +104,7 @@ export function LoginForm() {
                             )}
                         />
                     </div>
-                    <FormError message={error} />
+                    <FormError message={error || urlError} />
                     <FormSuccess message={success} />
                     <Button
                         type='submit'
