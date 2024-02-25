@@ -10,7 +10,12 @@ export const publicRoutes = ['/', '/auth/new-verification']
  * Will redirect to settings page if user is authenticated
  * @type {string[]}
  */
-export const authRoutes = ['/auth/login', '/auth/register', '/auth/error']
+export const authRoutes = [
+    '/auth/login',
+    '/auth/register',
+    '/auth/error',
+    '/auth/reset',
+]
 
 /**
  * The prefix for API authentication routes.
