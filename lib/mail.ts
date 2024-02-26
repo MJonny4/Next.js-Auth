@@ -2,6 +2,22 @@ import { Resend } from 'resend'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
+export const sendTwoFactorTokenEmail = async (email: string, token: string) => {
+    const htmlMessage = `
+        <div style="font-family: Arial, sans-serif; font-size: 16px; max-width: 600px; margin: 0 auto; background-color: #f4f4f4; padding: 20px;">
+            <h2 style="text-align: center;">Two-factor authentication token</h2>
+            <p>Your two-factor authentication token is: <strong style="color:blue;">${token}</strong></p>
+        </div>
+    `
+
+    await resend.emails.send({
+        from: 'onboarding@resend.dev',
+        to: email,
+        subject: 'Two-factor authentication token',
+        html: htmlMessage,
+    })
+}
+
 export const sendPasswordResetEmail = async (email: string, token: string) => {
     const resetLink = `http://localhost:3000/auth/new-password?token=${token}`
 
