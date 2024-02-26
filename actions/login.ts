@@ -5,10 +5,10 @@ import * as z from 'zod'
 
 import { signIn } from '@/auth'
 import { getUserByEmail } from '@/data/user'
-import { generateVerificationToken } from '@/lib/tokens'
+import { generateTwoFactorToken, generateVerificationToken } from '@/lib/tokens'
 import { DEFAULT_LOGIN_REDIRECT } from '@/routes'
 import { AuthError } from 'next-auth'
-import { sendVerificationEmail } from '@/lib/mail'
+import { sendTwoFactorTokenEmail, sendVerificationEmail } from '@/lib/mail'
 
 export const login = async (values: z.infer<typeof LoginSchema>) => {
     const validatedFields = LoginSchema.safeParse(values)
@@ -17,7 +17,7 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
         return { error: 'Invalid fields' }
     }
 
-    const { email, password } = validatedFields.data
+    const { email, password, code } = validatedFields.data
 
     const existingUser = await getUserByEmail(email)
     if (!existingUser || !existingUser.email || !existingUser.password) {
@@ -34,6 +34,19 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
         return {
             success:
                 'Confirmation email sent. Please verify your email before logging in.',
+        }
+    }
+
+    if (existingUser.isTwoFactorEnabled && existingUser.email) {
+        const twoFactorToken = await generateTwoFactorToken(existingUser.email)
+
+        await sendTwoFactorTokenEmail(
+            twoFactorToken.email,
+            twoFactorToken.token
+        )
+
+        return {
+            twoFactor: true,
         }
     }
 

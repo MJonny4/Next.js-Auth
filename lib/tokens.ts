@@ -25,6 +25,8 @@ export const generateTwoFactorToken = async (email: string) => {
             expires,
         },
     })
+
+    return twoFactorToken
 }
 
 export const generatePasswordResetToken = async (email: string) => {
