@@ -1,6 +1,7 @@
-import { auth } from '@/auth'
+import UserInfo from '@/components/user-info'
+import { currentUser } from '@/hooks/auth'
 
 export default async function ServerPage() {
-    const session = await auth()
-    return <div>{JSON.stringify(session)}</div>
+    const user = await currentUser()
+    return <UserInfo user={user} label='💻 Server component' />
 }
