@@ -2,7 +2,7 @@ import { Poppins } from 'next/font/google'
 
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import { LoginButtons } from '@/components/auth/login-button'
+import { LoginButton } from '@/components/auth/login-button'
 
 const fonts = Poppins({
     subsets: ['latin'],
@@ -26,11 +26,11 @@ export default function Home() {
                     and TailwindCSS
                 </p>
                 <div>
-                    <LoginButtons mode='redirect'>
+                    <LoginButton mode='modal' asChild>
                         <Button variant={'secondary'} size={'lg'}>
                             Sign in
                         </Button>
-                    </LoginButtons>
+                    </LoginButton>
                 </div>
             </div>
         </main>
