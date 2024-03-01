@@ -8,11 +8,11 @@ export const admin = async () => {
 
     if (role !== UserRole.ADMIN) {
         return {
-            success: '403 Unauthorized',
+            error: '403 Unauthorized',
         }
     }
 
     return {
-        error: 'Admin action succeeded',
+        success: 'Admin action succeeded',
     }
 }
