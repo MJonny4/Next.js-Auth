@@ -12,7 +12,7 @@ export const sendTwoFactorTokenEmail = async (email: string, token: string) => {
     `
 
     await resend.emails.send({
-        from: 'onboarding@resend.dev',
+        from: 'mail@ximuntion.dev',
         to: email,
         subject: 'Two-factor authentication token',
         html: htmlMessage,
@@ -27,7 +27,7 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
     `
 
     await resend.emails.send({
-        from: 'onboarding@resend.dev',
+        from: 'mail@ximuntion.dev',
         to: email,
         subject: 'Password reset request',
         html: htmlText,
@@ -42,7 +42,7 @@ export const sendVerificationEmail = async (email: string, token: string) => {
     `
 
     await resend.emails.send({
-        from: 'onboarding@resend.dev',
+        from: 'mail@ximuntion.dev',
         to: email,
         subject: 'Please verify your email',
         html: htmlText,
